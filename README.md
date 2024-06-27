@@ -146,7 +146,6 @@ hadolint --help
 ```
 
 ```text
-hadolint - Dockerfile Linter written in Haskell
 
 Usage: hadolint [-v|--version] [-c|--config FILENAME] [DOCKERFILE...]
                 [--file-path-in-report FILEPATHINREPORT] [--no-fail]
