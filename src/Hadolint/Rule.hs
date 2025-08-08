@@ -12,6 +12,7 @@ import qualified Data.Map as Map
 import qualified Data.Sequence as Seq
 import qualified Data.Text as Text
 import qualified Data.YAML as Yaml
+import qualified Hadolint.Rule.DL4007 as DL4007
 
 infixl 0 |>
 

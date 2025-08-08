@@ -246,3 +246,30 @@ isPipInstall cmd@(Command name _ _) = isStdPipInstall || isPythonPipInstall
     isPythonPipInstall =
       "python" `Text.isPrefixOf` name
         && ["-m", "pip", "install"] `isInfixOf` getArgs cmd
+
+-- | Detects if a command is an npm install/ci without production flags
+isNpmInstallOrCiWithoutProduction :: Command -> Bool
+isNpmInstallOrCiWithoutProduction cmd =
+  name cmd == "npm" &&
+  any (`elem` ["install", "ci"]) (getArgsNoFlags cmd) &&
+  not (hasAnyFlag ["production", "only=production"] cmd || hasAnyFlag ["--production", "--only=production"] cmd || hasProductionArg (getArgs cmd))
+  where
+    hasProductionArg = any (\a -> a == "--production" || a == "--only=production")
+
+-- | Detects if a command is a yarn install without production flags
+isYarnInstallWithoutProduction :: Command -> Bool
+isYarnInstallWithoutProduction cmd =
+  name cmd == "yarn" &&
+  "install" `elem` getArgsNoFlags cmd &&
+  not (hasAnyFlag ["production", "prod"] cmd || hasAnyFlag ["--production", "--prod"] cmd || hasProductionArg (getArgs cmd))
+  where
+    hasProductionArg = any (\a -> a == "--production" || a == "--prod")
+
+-- | Detects if a command is a pnpm install/ci without production flags
+isPnpmInstallOrCiWithoutProduction :: Command -> Bool
+isPnpmInstallOrCiWithoutProduction cmd =
+  name cmd == "pnpm" &&
+  any (`elem` ["install", "ci"]) (getArgsNoFlags cmd) &&
+  not (hasAnyFlag ["production", "only=production"] cmd || hasAnyFlag ["--production", "--only=production"] cmd || hasProductionArg (getArgs cmd))
+  where
+    hasProductionArg = any (\a -> a == "--production" || a == "--only=production")
